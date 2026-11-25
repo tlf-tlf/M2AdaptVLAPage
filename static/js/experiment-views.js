@@ -1,5 +1,5 @@
 /* Values transcribe the paper tables and Appendix D raised-plug results.
-   The original tables remain the default view and the no-JavaScript fallback. */
+   Interactive charts are the default view; original tables remain the no-JavaScript fallback. */
 (() => {
   'use strict';
 
@@ -270,12 +270,12 @@
   if (!pairs.length) return;
   const controls = element('div', 'experiment-view-controls');
   const description = element('span', 'experiment-view-label', 'Results view');
-  const toggle = element('button', 'experiment-view-toggle', 'View charts');
+  const toggle = element('button', 'experiment-view-toggle', 'View tables');
   toggle.id = 'experiment-view-toggle';
   toggle.type = 'button';
-  toggle.setAttribute('aria-pressed', 'false');
+  toggle.setAttribute('aria-pressed', 'true');
   toggle.setAttribute('aria-controls', pairs.map(pair => pair.chart.id).join(' '));
-  const status = element('span', 'ex-viz-status', 'Showing original tables');
+  const status = element('span', 'ex-viz-status', 'Showing interactive charts');
   status.setAttribute('role', 'status');
   controls.append(description, toggle, status);
   const heading = document.getElementById('experiment-heading');
@@ -287,7 +287,7 @@
     pairs.forEach(pair => { pair.table.hidden = showCharts; pair.chart.hidden = !showCharts; });
   }
   toggle.addEventListener('click', () => setResultsView(toggle.getAttribute('aria-pressed') !== 'true'));
-  // Always begin with the paper tables, including a page restored from the back-forward cache.
-  setResultsView(false);
-  window.addEventListener('pageshow', () => setResultsView(false));
+  // Always begin with charts, including a page restored from the back-forward cache.
+  setResultsView(true);
+  window.addEventListener('pageshow', () => setResultsView(true));
 })();
