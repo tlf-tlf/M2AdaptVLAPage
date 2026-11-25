@@ -1,0 +1,133 @@
+/* Section and figure styles applied inline in the original MemoActPage template. */
+:root {
+  --section-spacing: clamp(1.5rem, 3.2vw, 2rem);
+}
+
+main > .section {
+  padding-block: var(--section-spacing);
+}
+
+.hero .hero-body {
+  padding-bottom: var(--section-spacing);
+}
+
+#video .video-section-wrapper {
+  padding-bottom: 0;
+}
+
+#video .video-section-card:last-child {
+  margin-bottom: 0;
+}
+
+.section .title.is-3 {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+}
+
+.section .content.has-text-justified {
+  color: #444;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.research-questions {
+  list-style: none;
+  margin: 0 0 2.25rem;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.research-questions li + li {
+  margin-top: .55rem;
+}
+
+.research-questions a {
+  color: #333;
+  display: grid;
+  grid-template-columns: 2.65em 1fr;
+}
+
+.research-questions a:hover,
+.research-questions a:focus-visible {
+  text-decoration: underline;
+}
+
+.experiment-result {
+  margin-top: 3rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.experiment-result .title {
+  line-height: 1.25;
+}
+
+.video-speed-note {
+  color: #444;
+  font-size: 1.125rem;
+}
+
+.image-section {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.image-section img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* The paper contains both single-column and double-column illustrations. */
+.figure-small img,
+.table-small img {
+  width: 70%;
+}
+
+.publication-authors .affiliations {
+  font-size: 1rem;
+  margin-top: .35rem;
+}
+
+.publication-authors .author-notes {
+  font-size: .875rem;
+}
+
+.publication-authors sup {
+  font-size: .65em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.image-section a {
+  cursor: zoom-in;
+}
+
+.video-item video {
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.abstract-video {
+  margin-top: 1.5rem;
+}
+
+.abstract-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+}
+
+@media screen and (max-width: 768px) {
+  .figure-small img,
+  .table-small img {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .video-grid-2x2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

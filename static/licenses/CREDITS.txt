@@ -1,0 +1,15 @@
+Website template and styles
+
+MemoActPage project page
+https://github.com/MemoAct-Project/MemoActPage
+Apache License 2.0, included in MemoActPage-LICENSE.txt.
+The reference page's embedded stylesheet is stored separately as css/memoact-page.css. The M²AdaptVLA page adapts the template to its own paper, figures, and video recordings.
+
+Nerfies project website
+https://github.com/nerfies/nerfies.github.io
+MemoActPage credits the Nerfies website template. The original website identifies its Creative Commons Attribution-ShareAlike 4.0 International license:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Bulma v0.9.1
+https://github.com/jgthms/bulma/tree/0.9.1
+MIT License, included in Bulma-LICENSE.txt.

@@ -1,0 +1,116 @@
+/* Scoped comparison graphics; page typography and original table assets stay intact. */
+.experiment-view-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .8rem;
+  flex-wrap: wrap;
+  margin: -.2rem 0 1.5rem;
+  font-size: 1rem;
+}
+.experiment-view-label { color: #526176; }
+.experiment-view-toggle {
+  color: #175f5c;
+  background: #edf6f3;
+  border: 1px solid #a8ccc2;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  padding: .5rem 1.3rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s;
+}
+.experiment-view-toggle:hover { background: #dceee7; border-color: #6faaa0; }
+.experiment-view-toggle:focus-visible,
+.ex-viz-select:focus-visible { outline: 3px solid #6598ce; outline-offset: 3px; }
+.ex-viz-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+#experiment .image-section[hidden],
+#experiment .experiment-data-table[hidden],
+#experiment .ex-viz[hidden] { display: none !important; }
+.ex-viz { margin: 1.4rem 0 1.9rem; font-size: 1rem; color: #344258; }
+.ex-viz-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.1rem;
+  border-bottom: 1px solid #e0e7e8;
+  padding: 0 0 1.2rem;
+  margin: 0 0 1.2rem;
+}
+.ex-viz-stat { display: flex; flex-direction: column; gap: .25rem; padding-left: .85rem; border-left: 3px solid #a7cdc3; }
+.ex-viz-stat-label { font-size: .875rem; color: #526176; line-height: 1.3; }
+.ex-viz-stat-value { font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 700; color: #247b70; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.ex-viz-stat-note { font-size: .875rem; color: #5c6a79; line-height: 1.35; }
+.ex-viz-field { display: flex; align-items: center; gap: .75rem; margin: 0 0 1rem; flex-wrap: wrap; }
+.ex-viz-select-label { font-size: 1rem; font-weight: 600; }
+.ex-viz-select-wrap { position: relative; max-width: 100%; }
+.ex-viz-select-wrap::after { content: ''; position: absolute; right: 1rem; top: 47%; width: .4rem; height: .4rem; border-right: 1.5px solid #526176; border-bottom: 1.5px solid #526176; transform: translateY(-50%) rotate(45deg); pointer-events: none; }
+.ex-viz-select { appearance: none; -webkit-appearance: none; background: #fff; border: 1px solid #cbd6db; border-radius: 6px; color: #273d52; font: inherit; line-height: 1.25; padding: .6rem 2.4rem .6rem .8rem; min-height: 44px; max-width: 100%; cursor: pointer; }
+.ex-viz-card { background: #fbfcfd; border: 1px solid #dce5e9; border-radius: 10px; padding: 1.2rem 1.4rem; min-width: 0; }
+.ex-viz-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+.ex-viz-card-title { margin: 0 0 .25rem; font-size: 1.125rem; font-weight: 700; color: #293c51; line-height: 1.35; }
+.ex-viz-note { font-size: .875rem; color: #596879; margin: 0 0 1.15rem; line-height: 1.45; }
+.ex-viz-bars { list-style: none; padding: 0; margin: .8rem 0 0; }
+.ex-viz-row { padding: 0; margin: 0 0 .95rem; }
+.ex-viz-row:last-child { margin-bottom: .4rem; }
+.ex-viz-row-labels { display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; margin-bottom: .35rem; line-height: 1.25; }
+.ex-viz-model { font-size: 1rem; color: #3d4d62; }
+.ex-viz-numbers { display: flex; gap: .6rem; align-items: baseline; white-space: nowrap; flex-wrap: wrap; justify-content: flex-end; }
+.ex-viz-value { font-size: 1rem; color: #344258; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ex-viz-ours .ex-viz-model, .ex-viz-ours .ex-viz-value { font-weight: 700; color: #1b7168; }
+.ex-viz-delta { color: #596879; font-size: .875rem; font-variant-numeric: tabular-nums; }
+.ex-viz-track { width: 100%; height: 10px; display: block; overflow: hidden; border-radius: 3px; }
+.ex-viz-track-bg { fill: #eaf0f2; }
+.ex-viz-fill { transform-origin: left center; animation: ex-viz-grow .7s cubic-bezier(.22,.61,.36,1) both; }
+.ex-viz-blue { fill: #91aacc; }
+.ex-viz-lilac { fill: #a79ac1; }
+.ex-viz-slate { fill: #8999aa; }
+.ex-viz-amber { fill: #d4b182; }
+.ex-viz-rose { fill: #c89aa5; }
+.ex-viz-teal { fill: #379b89; }
+.ex-viz-scale { display: flex; justify-content: space-between; font-size: .8125rem; color: #6a7887; margin-top: .6rem; font-variant-numeric: tabular-nums; }
+.ex-viz-footnote { margin: .65rem .15rem 0; font-size: .875rem; color: #596879; line-height: 1.45; }
+@keyframes ex-viz-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (max-width: 650px) {
+  .ex-viz-card-grid { grid-template-columns: minmax(0, 1fr); }
+  .ex-viz-card { padding: 1rem; }
+  .ex-viz-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+  .ex-viz-summary .ex-viz-stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .ex-viz-field { align-items: stretch; flex-direction: column; gap: .35rem; }
+  .ex-viz-select { width: 100%; }
+}
+@media (max-width: 380px) {
+  .ex-viz-summary { grid-template-columns: minmax(0, 1fr); }
+  .ex-viz-numbers { gap: .2rem; flex-direction: column; align-items: flex-end; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-viz-fill { animation: none; }
+  .experiment-view-toggle { transition: none; }
+}
+
+/* Appendix D, using the same table/chart switch as the main results. */
+.raised-plug-report { margin-top: 2rem; scroll-margin-top: 1.5rem; }
+.experiment-data-table { margin: 1.5rem auto; max-width: 800px; overflow-x: auto; font-size: 1rem; }
+.experiment-data-table table { width: 100%; border-collapse: collapse; color: #344258; }
+.experiment-data-table caption { text-align: left; font-weight: 600; padding: 0 0 .7rem; }
+.experiment-data-table th, .experiment-data-table td { padding: .65rem .8rem; text-align: right; vertical-align: middle; }
+.experiment-data-table th:first-child { text-align: left; }
+.experiment-data-table thead { border-top: 2px solid #526176; border-bottom: 1px solid #9da8b0; }
+.experiment-data-table tbody { border-bottom: 2px solid #526176; }
+.experiment-data-table tbody th { font-weight: 400; }
+.experiment-data-table tbody .ours { background: #f0f1f2; }
+.experiment-data-table tbody .ours th { font-weight: 700; }
+.experiment-data-table u { text-underline-offset: .2em; }
+@media (max-width: 480px) {
+  .experiment-data-table th, .experiment-data-table td { padding: .6rem .35rem; }
+}

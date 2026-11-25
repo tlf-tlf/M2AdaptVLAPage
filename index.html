@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="M²AdaptVLA: Multimodal Memory-Augmented Vision-Language-Action Model with Predictive Test-Time Adaptation">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' file:; style-src 'self' file:; img-src 'self' file:; media-src 'self' file:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>M²AdaptVLA</title>
+  <link rel="stylesheet" href="static/css/memoact-page.css">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="static/css/method-flow.css?v=20261119a">
+  <link rel="stylesheet" href="static/css/experiment-views.css?v=20261124a">
+  <script src="static/js/method-flow.js?v=20261119a" defer></script>
+  <script src="static/js/experiment-views.js?v=20261124a" defer></script>
+</head>
+<body>
+<section class="hero" aria-labelledby="paper-title">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" id="paper-title">M²AdaptVLA: Multimodal Memory-Augmented Vision-Language-Action Model with Predictive Test-Time Adaptation</h1>
+            <div class="is-size-5 publication-authors"><div><span class="author-block">Liufan Tan<sup>1,2,*</sup></span>, <span class="author-block">Tong Wang<sup>1,*</sup></span>, <span class="author-block">Yuehao Yin<sup>1</sup></span>, <span class="author-block">Jian Chen<sup>1,3</sup></span>, <span class="author-block">Yihang Yin<sup>1,4</sup></span>, <span class="author-block">Ying Qu<sup>1</sup></span>, <span class="author-block">Wenyu Li<sup>1</sup></span>, <span class="author-block">Ruyi Gan<sup>1</sup></span>, <span class="author-block">Hao Wang<sup>1,†</sup></span></div><div class="affiliations"><span class="author-block"><sup>1</sup>X SQUARE ROBOT</span>   <span class="author-block"><sup>2</sup>Chongqing University</span>   <span class="author-block"><sup>3</sup>University of Science and Technology of China</span>   <span class="author-block"><sup>4</sup>University of Edinburgh</span></div><div class="author-notes">* Equal contribution   † Corresponding author</div></div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links"><span class="link-block"><a href="assets/M2AdaptVLA.pdf?v=6243a1db9190" class="external-link button is-normal is-rounded is-dark"><span class="icon"><svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h9l5 5v14H5z M14 2.5v5h5 M8 13h8 M8 17h6"></path></svg></span><span>Paper</span></a></span> <span class="link-block"><a href="#video" class="external-link button is-normal is-rounded is-dark"><span class="icon"><svg viewbox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3 6h12v12H3z M15 10l6-4v12l-6-4z"></path></svg></span><span>Video</span></a></span></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<main>
+<section class="section" id="abstract" aria-labelledby="abstract-heading">
+  <div class="container is-max-desktop">
+    <h2 id="abstract-heading" class="title is-3 has-text-centered">Abstract</h2>
+<div class="content has-text-justified"><p>Effective robotic manipulation calls for multimodal memory and rapid adaptation to shifts in contact dynamics. However, many existing policies, which retain either visual or wrench history, may miss key cues from the other modality. Moreover, even with wrench memory, fixed policies can struggle when contact conditions shift at deployment. To this end, we introduce M²AdaptVLA, a vision-language-action model that integrates visual and wrench memories with predictive test-time adaptation. For visual memory, the model uses test-time training (TTT) to encode observation history in fast weights. Each entry in the bounded TTT bank combines the corresponding frame&#x27;s features with a readout from these weights, preserving cues that predate the oldest retained frame. For wrench memory, a context gate controls how much the action expert draws on wrench history as it jointly denoises future actions and wrenches. For predictive test-time adaptation, the auxiliary wrench prediction loss also provides online self-supervision. Using measured wrenches as targets, we update low-rank policy adapters by backpropagating only through the final denoising step. Real-world experiments show that the TTT bank outperforms visual memory baselines on progress tracking, scene recall, and demonstration following. On contact-sensitive tasks, the context gate yields higher success rates than direct injection or gated cross-attention. Predictive test-time adaptation improves robustness to shifts in contact dynamics. On eight tasks requiring visual and wrench memory, M²AdaptVLA achieves a mean success rate of 82.71%, a 31.46% absolute gain over the strongest baseline.</p></div>
+    <div class="abstract-video">
+  <video controls playsinline preload="none" width="1920" height="1080"
+         poster="assets/videos/M2AdaptVLA_5min_Talk.jpg?v=0e5fa9a7f7a3" aria-label="M²AdaptVLA supplementary presentation">
+    <source src="assets/videos/M2AdaptVLA_5min_Talk.mp4?v=56eede880816" type="video/mp4">
+    <a href="assets/videos/M2AdaptVLA_5min_Talk.mp4?v=56eede880816">Watch the supplementary presentation</a>
+  </video>
+</div>
+  </div>
+</section>
+<section class="section" id="introduction" aria-labelledby="introduction-heading">
+  <div class="container is-max-desktop">
+    <h2 id="introduction-heading" class="title is-3 has-text-centered">Introduction</h2>
+<figure><div class="image-section "><a href="assets/figures/intro.webp" aria-label="Visual and wrench memories during a keypress, comparisons of the frame bank and TTT bank, and adaptation to a raised whiteboard."><img src="assets/figures/intro.webp" alt="Visual and wrench memories during a keypress, comparisons of the frame bank and TTT bank, and adaptation to a raised whiteboard." width="2520" height="1194" loading="lazy"></a></div>
+    <figcaption class="content has-text-justified"><strong>Multimodal memory and predictive test-time adaptation in M²AdaptVLA.</strong> (a) Visual memory cues the next key, while wrench memory signals a completed press. With direct injection, the action expert implicitly learns how much to rely on wrench memory. The context gate weights wrench history by task stage. (b) The TTT bank provides an implicit progress cue and retains history beyond the frame window, outperforming the frame bank on progress tracking, initial-scene recall, and demonstration following. (c) Raising the board changes contact dynamics. Schematic traces show how wrench forecast errors guide online adaptation to this shift.</figcaption></figure>
+  </div>
+</section>
+<section class="section" id="method" aria-labelledby="method-heading">
+  <div class="container is-max-desktop">
+    <h2 id="method-heading" class="title is-3 has-text-centered">Method</h2>
+<figure><div class="image-section "><a href="assets/figures/method.webp" aria-label="Model architecture showing the TTT visual memory bank, context-gated wrench history in the action expert, and final-step adaptation."><img src="assets/figures/method.webp" alt="Model architecture showing the TTT visual memory bank, context-gated wrench history in the action expert, and final-step adaptation." width="2500" height="1255" loading="lazy"></a></div>
+    <figcaption class="content has-text-justified"><strong>M²AdaptVLA architecture.</strong> (a) Each bank entry combines current visual features with a gated fast-weight readout. (b) At each full-attention layer, VLM context and TCN-encoded wrench history gate the action expert’s wrench residual. (c) At test time, we backpropagate the wrench loss only through the final denoising step to update LoRA adapters in layers 1–4 of the VLM and expert.</figcaption></figure>
+  </div>
+</section>
+<section class="section" id="experiment" aria-labelledby="experiment-heading">
+  <div class="container is-max-desktop">
+    <h2 id="experiment-heading" class="title is-3 has-text-centered">Experiment</h2>
+<div class="content has-text-justified"><p>We evaluated M²AdaptVLA on two bimanual robots to answer four questions.</p></div>
+    <ol class="research-questions" aria-label="Research questions">
+<li><a href="#result-q1"><strong>(Q1)</strong> How does M²AdaptVLA compare with state-of-the-art VLA baselines on tasks that rely on visual and wrench memory?</a></li>
+<li><a href="#result-q2"><strong>(Q2)</strong> What advantages does the TTT bank offer over existing visual memory methods?</a></li>
+<li><a href="#result-q3"><strong>(Q3)</strong> Does the context gate outperform existing methods for injecting wrench history into the policy?</a></li>
+<li><a href="#result-q4"><strong>(Q4)</strong> Can a policy with predictive test-time adaptation better handle shifts in contact dynamics at deployment than a fixed policy?</a></li>
+</ol>
+    <h3 class="title is-4">Experimental setup</h3>
+    <div class="content has-text-justified"><p>The TeleTwin Desktop and Tianji each use a front camera, two wrist cameras, and six-axis wrist wrench sensors. The eight tasks probe visual memory, wrench memory, or both. The dataset contains 5,953 demonstrations. We trained the policy on eight NVIDIA A800 GPUs and ran inference and online adaptation on a single RTX 5090.</p><p>For whole-task success, the robot had to complete every required stage. We evaluated each policy over 30 trials on Open Safe and 20 on each of the other seven tasks. In the Open Safe ablations, we scored each of the nine stages separately over 60 trials per variant.</p></div>
+    <div class="image-section figure-small"><a href="assets/figures/platforms.webp" aria-label="Both robots have a front camera and a camera at each wrist. The TeleTwin Desktop is on the left and Tianji is on the right."><img src="assets/figures/platforms.webp" alt="Both robots have a front camera and a camera at each wrist. The TeleTwin Desktop is on the left and Tianji is on the right." width="1600" height="755" loading="lazy"></a></div>
+    <div class="image-section "><a href="assets/figures/tasks.webp" aria-label="Eight task instructions with sequences of real robot observations, grouped by the memory required."><img src="assets/figures/tasks.webp" alt="Eight task instructions with sequences of real robot observations, grouped by the memory required." width="2560" height="1427" loading="lazy"></a></div>
+    <article class="experiment-result" id="result-q1" aria-labelledby="q1-heading">
+<h3 class="title is-4" id="q1-heading">Q1. M²AdaptVLA outperforms the VLA baselines</h3>
+<div class="content has-text-justified"><p>Across eight tasks, M²AdaptVLA achieved 82.71% mean success, 31.46 percentage points above the strongest baseline, π-Mem (51.25%). It ranked first on seven tasks and tied for first on Unplug.</p><p>The baselines’ strengths varied with the task. On Button Sequence, both visual memory baselines achieved 55% success and both force-aware baselines scored 0%. On USB-C Insertion and Removal, the force-aware baselines reached 40–50% and the visual memory baselines reached 15–30%. M²AdaptVLA achieved 80% on Button Sequence and 65% on USB-C Insertion and Removal.</p></div>
+<div class="image-section "><a href="assets/figures/table-1.webp" aria-label="Table 1. Whole-task success rates for six policies across eight real-robot tasks. M²AdaptVLA achieves 82.71% mean success and π-Mem achieves 51.25%."><img src="assets/figures/table-1.webp" alt="Table 1. Whole-task success rates for six policies across eight real-robot tasks. M²AdaptVLA achieves 82.71% mean success and π-Mem achieves 51.25%." width="2505" height="790" loading="lazy"></a></div>
+</article>
+    <article class="experiment-result" id="result-q2" aria-labelledby="q2-heading">
+<h3 class="title is-4" id="q2-heading">Q2. The TTT bank improves progress tracking, initial-scene recall, and demonstration following</h3>
+<div class="content has-text-justified"><p>On the same WALL-X backbone, the TTT bank completed 69.7% of individual keypresses during safe passcode entry. GDN achieved 35.0%, Frame Bank 34.0%, TTT only 30.0%, and RoboTTT-style 12.7%.</p></div>
+<div class="image-section "><a href="assets/figures/table-2.webp" aria-label="Table 2, visual memory rows. Select to open the complete Open Safe stage results."><img src="assets/figures/table-2-visual.webp" alt="Table 2, visual memory rows. Select to open the complete Open Safe stage results." width="2505" height="670" loading="lazy"></a></div>
+<div class="content has-text-justified"><p>Updating fast weights after a fixed number of action steps provides an implicit progress cue. Each bank entry also combines the frame’s visual features with the history available at that decision. Later entries can therefore retain an early cue, such as which drawer was initially open, after that frame leaves the bank.</p></div>
+<div class="image-section figure-small"><a href="assets/figures/baselines.webp" aria-label="TTT only, RoboTTT-style, and the TTT bank use different memory interfaces on the same WALL-X backbone."><img src="assets/figures/baselines.webp" alt="TTT only, RoboTTT-style, and the TTT bank use different memory interfaces on the same WALL-X backbone." width="1500" height="1012" loading="lazy"></a></div>
+<div class="content has-text-justified"><p>For initial-scene recall, the TTT bank reopened the correct drawer in 90% of trials, compared with 75% for TTT only, the strongest alternative. For demonstration following, it reproduced the button order in 80% of trials, compared with 60% for RoboTTT-style.</p></div>
+<div class="image-section table-small"><a href="assets/figures/table-3.webp" aria-label="Table 3. Whole-task success on drawer recall and button following. TTT bank scores 90% and 80%, TTT only scores 75% and 55%, RoboTTT-style scores 55% and 60%, and GDN scores 55% on both."><img src="assets/figures/table-3.webp" alt="Table 3. Whole-task success on drawer recall and button following. TTT bank scores 90% and 80%, TTT only scores 75% and 55%, RoboTTT-style scores 55% and 60%, and GDN scores 55% on both." width="1458" height="654" loading="lazy"></a></div>
+</article>
+    <article class="experiment-result" id="result-q3" aria-labelledby="q3-heading">
+<h3 class="title is-4" id="q3-heading">Q3. The context gate outperforms direct wrench injection and gated cross-attention</h3>
+<div class="content has-text-justified"><p>With the same TTT bank, the context gate achieved 79.6% mean stage success on Open Safe. Direct injection into the action expert reached 69.4%, direct injection into the VLM reached 31.5%, and gated cross-attention (GCA) reached 48.5%. Compared with direct action-expert input, the context gate increased key insertion success from 51.7% to 75.0% and final keypad press success from 38.3% to 70.0%.</p></div>
+<div class="image-section "><a href="assets/figures/table-2.webp" aria-label="Table 2, wrench injection and future wrench prediction rows. Select to open the complete Open Safe stage results."><img src="assets/figures/table-2-wrench.webp" alt="Table 2, wrench injection and future wrench prediction rows. Select to open the complete Open Safe stage results." width="2505" height="815" loading="lazy"></a></div>
+<div class="content has-text-justified"><p>In the same Open Safe episode, the context gate gave wrench history greater weight during key insertion, when resistance can indicate misalignment, and less weight as the unlocked door swung open. The GCA gate, computed from pooled wrench features, remained nearly constant in this episode.</p></div>
+<div class="image-section figure-small"><a href="assets/figures/gates.webp" aria-label="Context gate and GCA gate values over stages of the same safe-opening episode."><img src="assets/figures/gates.webp" alt="Context gate and GCA gate values over stages of the same safe-opening episode." width="1700" height="1087" loading="lazy"></a></div>
+<div class="content has-text-justified"><p>Adding future wrench prediction as auxiliary supervision raised keypad press success from 71.0% to 75.7% and mean stage success from 79.6% to 83.3%.</p></div>
+</article>
+    <article class="experiment-result" id="result-q4" aria-labelledby="q4-heading">
+<h3 class="title is-4" id="q4-heading">Q4. Predictive test-time adaptation improves robustness to shifts in contact dynamics</h3>
+<div class="content has-text-justified"><p>Compared with the fixed policy, updating the first four layers raised wiping success from 90% to 100% when the whole board was raised, and from 80% to 95% when the board was flipped and its rear edge raised. Both policies observed wrist wrenches. The adaptive policy also updated its adapters using the error between predicted and measured wrenches.</p></div>
+<div class="image-section figure-small"><a href="assets/figures/whiteboard.webp" aria-label="The board at its original height, raised as a whole, and flipped with its rear edge raised."><img src="assets/figures/whiteboard.webp" alt="The board at its original height, raised as a whole, and flipped with its rear edge raised." width="1850" height="446" loading="lazy"></a></div>
+<div class="content has-text-justified"><p>Across the two conditions, mean success was 97.5% with four-layer adaptation, 87.5% with all 24 layers, and 85.0% with the fixed policy. Updating four layers took 159.5 ms per update on the RTX 5090, compared with 267.7 ms for all layers.</p></div>
+<div class="image-section table-small"><a href="assets/figures/table-4.webp" aria-label="Table 4. Mean success under two contact shifts is 85% for the fixed policy, 97.5% for first-four-layer adaptation, and 87.5% for all-layer adaptation."><img src="assets/figures/table-4.webp" alt="Table 4. Mean success under two contact shifts is 85% for the fixed policy, 97.5% for first-four-layer adaptation, and 87.5% for all-layer adaptation." width="1458" height="816" loading="lazy"></a></div>
+<div class="content has-text-justified"><a href="#contact-clips">Watch the paired wiping trials</a></div>
+<section class="raised-plug-report" id="raised-plug-results" aria-labelledby="raised-plug-heading">
+<h4 class="title is-5" id="raised-plug-heading">Plug insertion with a raised power strip</h4>
+<div class="content has-text-justified"><p>We also evaluated adaptation when a board eraser raised one side of the power strip, changing the height and orientation of its sockets. Each configuration was evaluated over 20 trials; success required fully inserting and releasing the plug.</p><p>Updating layers 1–4 improved success from 75% to 85%, a gain of 10 percentage points (13.3% relative), while updating all 24 layers achieved 70%. Consistent with the wiping results, adapting more layers did not necessarily improve robustness to changed contact conditions.</p></div>
+<div class="image-section table-small" id="raised-plug-table">
+<a href="assets/figures/table-raised-plug.webp" aria-label="Table 8 from Appendix D: predictive test-time adaptation on Insert Plug."><img src="assets/figures/table-raised-plug.webp" alt="Paper Table 8. Raised power-strip insertion, 20 trials per policy: Fixed 75%; LoRA 1–4 85% (+13.3% relative); LoRA 1–24 70% (−6.7% relative)." width="1434" height="444" loading="lazy"></a>
+</div>
+<figure>
+<div class="image-section"><a href="assets/figures/raised-plug.png" aria-label="Separate raised-power-strip trials: the fixed policy leaves the plug unseated, while four-layer adaptation completes insertion and release."><img src="assets/figures/raised-plug.png" alt="A board eraser raises one side of the power strip. The upper sequence shows unsuccessful insertion with the fixed policy; the lower sequence shows insertion and release with predictive test-time adaptation." width="1311" height="827" loading="lazy"></a></div>
+<figcaption class="content has-text-justified">The fixed policy repeatedly attempts insertion without seating the plug; four-layer adaptation completes insertion after an initially unsuccessful attempt. These are separate illustrative trials, with timestamps from their respective recordings.</figcaption>
+</figure>
+<div class="content has-text-justified"><a href="#plug-contact-clips">Watch the raised-power-strip trials</a></div>
+</section>
+</article>
+  </div>
+</section>
+<section id="video" class="section" aria-labelledby="video-heading">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" id="video-heading">Video</h2>
+    <p class="has-text-centered video-speed-note">All demonstrations are shown at 2× speed.</p>
+    <div class="video-section-wrapper">
+      <div class="video-section-card">
+        <h4 class="has-text-centered">Visual and multimodal memory tasks</h4>
+        <div class="video-grid-2x2">
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/open-safe-20261120.jpg" aria-label="Open Safe">
+              <source src="assets/videos/open-safe-20261120.mp4" type="video/mp4">
+              <a href="assets/videos/open-safe-20261120.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Open Safe</div>
+              <p class="video-context">Unlock the safe with the key and code 1-3-7-9-B, then retrieve the object.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/drawer-recall.jpg" aria-label="OpenDrawerMem">
+              <source src="assets/videos/drawer-recall.mp4" type="video/mp4">
+              <a href="assets/videos/drawer-recall.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">OpenDrawerMem</div>
+              <p class="video-context">Close the open drawer, then put the object away in that same drawer.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/button-sequence.jpg" aria-label="Button Sequence">
+              <source src="assets/videos/button-sequence.mp4" type="video/mp4">
+              <a href="assets/videos/button-sequence.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Button Sequence</div>
+              <p class="video-context">Press the colored buttons in the order shown on the lettered sheets.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/double-press.jpg" aria-label="Double Press">
+              <source src="assets/videos/double-press.mp4" type="video/mp4">
+              <a href="assets/videos/double-press.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Double Press</div>
+              <p class="video-context">Press the bottle pump exactly twice and return to the starting pose.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="video-section-card">
+        <h4 class="has-text-centered">Wrench memory tasks</h4>
+        <div class="video-grid-2x2">
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/usb-c-insertion-removal.jpg" aria-label="USB-C Insertion and Removal">
+              <source src="assets/videos/usb-c-insertion-removal.mp4" type="video/mp4">
+              <a href="assets/videos/usb-c-insertion-removal.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">USB-C Insertion and Removal</div>
+              <p class="video-context">Plug in the adapter and test each light bar with the USB-C cable.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/insert-plug.jpg" aria-label="Insert Plug">
+              <source src="assets/videos/insert-plug.mp4" type="video/mp4">
+              <a href="assets/videos/insert-plug.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Insert Plug</div>
+              <p class="video-context">Insert the plug into the power strip and release it.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/unplug.jpg" aria-label="Unplug">
+              <source src="assets/videos/unplug.mp4" type="video/mp4">
+              <a href="assets/videos/unplug.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Unplug</div>
+              <p class="video-context">Pull the plug out of the power strip and set it down.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/wipe-board.jpg" aria-label="Wipe Board">
+              <source src="assets/videos/wipe-board.mp4" type="video/mp4">
+              <a href="assets/videos/wipe-board.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Wipe Board</div>
+              <p class="video-context">Wipe the marks off the board and return the eraser.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="video-section-card" id="contact-clips">
+        <h4 class="has-text-centered">Wipe Board under shifts in contact dynamics</h4>
+        <h5 class="video-subsection-title">Board raised</h5>
+        <div class="video-grid-2x2">
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/raised-fixed.jpg" aria-label="Board raised, Fixed policy">
+              <source src="assets/videos/raised-fixed.mp4" type="video/mp4">
+              <a href="assets/videos/raised-fixed.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Fixed policy</div>
+              <p class="video-context">Unsuccessful trial.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/raised-adaptation.jpg" aria-label="Board raised, Predictive test-time adaptation">
+              <source src="assets/videos/raised-adaptation.mp4" type="video/mp4">
+              <a href="assets/videos/raised-adaptation.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label video-label-ours">Predictive test-time adaptation</div>
+              <p class="video-context">Successful trial.</p>
+            </figcaption>
+          </figure>
+        </div>
+        <h5 class="video-subsection-title">Board flipped, rear edge raised</h5>
+        <div class="video-grid-2x2">
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/flipped-raised-fixed.jpg" aria-label="Board flipped, rear edge raised, Fixed policy">
+              <source src="assets/videos/flipped-raised-fixed.mp4" type="video/mp4">
+              <a href="assets/videos/flipped-raised-fixed.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Fixed policy</div>
+              <p class="video-context">Unsuccessful trial.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/flipped-raised-adaptation.jpg" aria-label="Board flipped, rear edge raised, Predictive test-time adaptation">
+              <source src="assets/videos/flipped-raised-adaptation.mp4" type="video/mp4">
+              <a href="assets/videos/flipped-raised-adaptation.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label video-label-ours">Predictive test-time adaptation</div>
+              <p class="video-context">Successful trial.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="video-section-card" id="plug-contact-clips">
+        <h4 class="has-text-centered">Insert Plug under shifts in contact dynamics</h4>
+        <h5 class="video-subsection-title">One side raised with a board eraser</h5>
+        <div class="video-grid-2x2">
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/plug-eraser-fixed.jpg" aria-label="Insert Plug, one side raised with a board eraser, fixed policy">
+              <source src="assets/videos/plug-eraser-fixed.mp4" type="video/mp4">
+              <a href="assets/videos/plug-eraser-fixed.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label">Fixed policy</div>
+              <p class="video-context">Unsuccessful trial.</p>
+            </figcaption>
+          </figure>
+          <figure class="video-item">
+            <video controls playsinline preload="none" width="1280" height="720" poster="assets/videos/plug-eraser-adaptation.jpg" aria-label="Insert Plug, one side raised with a board eraser, predictive test-time adaptation">
+              <source src="assets/videos/plug-eraser-adaptation.mp4" type="video/mp4">
+              <a href="assets/videos/plug-eraser-adaptation.mp4">Open this video</a>
+            </video>
+            <figcaption>
+              <div class="video-label video-label-ours">Predictive test-time adaptation</div>
+              <p class="video-context">Successful trial.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" id="conclusion" aria-labelledby="conclusion-heading">
+  <div class="container is-max-desktop">
+    <h2 id="conclusion-heading" class="title is-3 has-text-centered">Conclusion</h2>
+<div class="content has-text-justified"><p>In this work, we introduced M²AdaptVLA, a vision-language-action policy that integrates visual and wrench memories with predictive test-time adaptation. In real-robot experiments, its TTT bank outperformed visual memory baselines in tracking task progress, recalling the initial scene, and following demonstrated sequences. The context gate adjusted the influence of wrench history across task stages. Predictive test-time adaptation improved robustness to changes in contact conditions with low update latency. Across eight real-robot tasks, M²AdaptVLA achieved 82.71% mean success, an absolute gain of 31.46% over the strongest baseline. A limitation of our approach is that maintaining both visual and wrench memories increases overall inference latency. In future work, we will explore a two-timescale architecture in which a slow module updates multimodal memory and a fast controller uses the latest memory and current observations to select actions in real time.</p></div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="container"><div class="content has-text-centered">
+    Website template adapted from <a href="static/licenses/CREDITS.txt">MemoActPage and NeRFies</a>.
+  </div></div>
+</footer>
+</body>
+</html>
