@@ -131,3 +131,29 @@ main > .section {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Copyable BibTeX citation, with wrapping on narrow screens. */
+#citation .citation-block {
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: #f5f5f5;
+  color: #333;
+  border-radius: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#citation .citation-block,
+#citation .citation-block code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace !important;
+}
+
+#citation .citation-block code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
