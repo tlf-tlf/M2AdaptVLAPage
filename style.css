@@ -148,7 +148,7 @@ main > .section {
 
 #citation .citation-block,
 #citation .citation-block code {
-  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 #citation .citation-block code {
